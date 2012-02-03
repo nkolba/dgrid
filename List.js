@@ -256,6 +256,12 @@ function(put, declare, listen, aspect, has, TouchScroll, hasClass){
 			this.headerScrollNode.style.height = bodyNode.style.marginTop = headerHeight + "px";
 			if(footerHeight){ bodyNode.style.marginBottom = footerHeight + "px"; }
 			
+			//fix row selection bug in lists for IE 6,7 & Quirksmode
+			if ((quirks || has("ie") <8) && this.listType == "list"){
+				bodyNode.id = bodyNode.id ? bodyNode.id : ("dgrid-list-bodyNode-" + new Date().getMilliseconds());
+ 				this.addCssRule(("#" + bodyNode.id + " .dgrid-row"),"width: " + (this.bodyNode.offsetWidth - (!scrollbarWidth ? 0 : scrollbarWidth)) + "px");
+			}
+			
 			if(quirks){
 				// in IE6 and quirks mode, the "bottom" CSS property is ignored.
 				// We guard against negative values in case of issues with external CSS.
